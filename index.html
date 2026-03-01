@@ -24,12 +24,13 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .premio-txt h3{font-size:1.1rem;font-weight:800;margin-bottom:5px}
 .premio-txt p{font-size:0.92rem;color:#555;line-height:1.55}
 .sorteio-aviso{margin-top:12px;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 14px;font-size:0.92rem;color:#15803d;font-weight:700;text-align:center}
-.passo{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
-.pnum{background:#15803d;color:white;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;flex-shrink:0;margin-top:2px}
-.ptxt{font-size:1rem;line-height:1.65;color:#333}
+.passo{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start}
+.pnum{background:#15803d;color:white;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0;margin-top:2px}
+.ptxt{font-size:1.05rem;line-height:1.7;color:#333}
+.ptxt strong{color:#14532d}
 .legenda{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap}
-.li{display:flex;align-items:center;gap:7px;font-size:0.95rem;font-weight:700}
-.lc{width:20px;height:20px;border-radius:5px;flex-shrink:0}
+.li{display:flex;align-items:center;gap:7px;font-size:1rem;font-weight:700}
+.lc{width:22px;height:22px;border-radius:5px;flex-shrink:0}
 .lc.livre{background:#f9fafb;border:2px solid #d1d5db}
 .lc.vendida{background:#fca5a5;border:2px solid #f87171}
 .lc.escolhida{background:#22c55e;border:2px solid #16a34a}
@@ -38,14 +39,16 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .cota.livre{background:#f9fafb;border-color:#d1d5db;color:#374151}
 .cota.vendida{background:#fee2e2;border-color:#fca5a5;color:#b91c1c;cursor:not-allowed}
 .cota.escolhida{background:#22c55e;border-color:#16a34a;color:white;transform:scale(1.1);box-shadow:0 3px 12px rgba(22,163,74,.4)}
-.admin-zona{margin-top:16px;text-align:center}
-.btn-admin{background:none;border:none;padding:8px 16px;color:#e5e7eb;font-size:0.75rem;font-family:'Nunito',sans-serif;cursor:pointer;letter-spacing:2px}
-.painel-admin{display:none;background:#fefce8;border:2px solid #fde068;border-radius:14px;padding:18px;margin-top:8px;text-align:left}
+/* ADMIN — engrenagem maior e visível */
+.admin-zona{margin-top:20px;text-align:center;border-top:1px solid #f3f4f6;padding-top:16px}
+.btn-admin{background:none;border:2px solid #e5e7eb;border-radius:12px;padding:10px 22px;color:#9ca3af;font-size:1.3rem;font-family:'Nunito',sans-serif;cursor:pointer}
+.btn-admin:active{background:#f9fafb}
+.painel-admin{display:none;background:#fefce8;border:2px solid #fde068;border-radius:14px;padding:20px;margin-top:12px;text-align:left}
 .painel-admin.show{display:block}
-.admin-titulo{font-size:1rem;font-weight:800;color:#713f12;margin-bottom:4px}
-.admin-sub{font-size:0.85rem;color:#92400e;margin-bottom:14px;line-height:1.5}
-.admin-input{width:100%;border:2px solid #fde068;border-radius:10px;padding:13px 15px;font-size:1.2rem;font-family:'Nunito',sans-serif;margin-bottom:10px;text-align:center;letter-spacing:3px}
-.btn-admin-entrar{width:100%;background:#ca8a04;color:white;border:none;border-radius:12px;padding:14px;font-size:1.05rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
+.admin-titulo{font-size:1.05rem;font-weight:800;color:#713f12;margin-bottom:6px}
+.admin-sub{font-size:0.9rem;color:#92400e;margin-bottom:16px;line-height:1.55}
+.admin-input{width:100%;border:2px solid #fde068;border-radius:10px;padding:14px 15px;font-size:1.2rem;font-family:'Nunito',sans-serif;margin-bottom:12px;text-align:center;letter-spacing:3px}
+.btn-admin-entrar{width:100%;background:#ca8a04;color:white;border:none;border-radius:12px;padding:15px;font-size:1.05rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
 .aviso-admin{display:none;background:#ca8a04;color:white;padding:12px 16px;font-weight:800;font-size:0.9rem;position:sticky;top:0;z-index:40;align-items:center;justify-content:space-between;gap:10px}
 .aviso-admin.show{display:flex}
 .btn-salvar{background:white;color:#92400e;border:none;border-radius:10px;padding:10px 18px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
@@ -66,21 +69,24 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .modal-titulo{font-size:1.4rem;font-weight:900;color:#15803d;margin-bottom:6px}
 .modal-sub{color:#666;font-size:0.95rem;margin-bottom:20px;line-height:1.55}
 .resumo{background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:14px;margin-bottom:22px;font-size:1rem;line-height:1.7;color:#14532d;font-weight:700}
-.pix-card{background:#166534;color:white;border-radius:16px;padding:20px;margin-bottom:14px}
+/* PASSO NO MODAL */
+.modal-passo{display:flex;align-items:flex-start;gap:12px;background:#f8fafc;border-radius:14px;padding:14px;margin-bottom:14px;border:2px solid #e2e8f0}
+.modal-passo-num{background:#15803d;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;flex-shrink:0}
+.modal-passo-txt{font-size:0.97rem;line-height:1.6;color:#333;font-weight:600}
+.modal-passo-txt strong{color:#14532d;display:block;font-size:1.05rem;margin-bottom:2px}
+/* PIX */
+.pix-card{background:#166534;color:white;border-radius:16px;padding:20px;margin-bottom:12px}
 .pix-label{font-size:0.85rem;opacity:0.75;margin-bottom:6px;font-weight:700}
 .pix-chave{font-size:1.4rem;font-weight:900;margin-bottom:4px;letter-spacing:1px}
 .pix-nome{font-size:0.85rem;opacity:0.7;margin-bottom:16px}
 .pix-valor{background:#22c55e;border-radius:12px;padding:14px;text-align:center;font-size:1.4rem;font-weight:900}
 .btn-copiar-pix{width:100%;background:#f0fdf4;color:#14532d;border:2px solid #86efac;border-radius:12px;padding:16px;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
-.copiado-msg{display:none;text-align:center;color:#14532d;font-weight:800;font-size:1rem;padding:14px;background:#d1fae5;border-radius:12px;margin-bottom:16px;line-height:1.6;border:2px solid #86efac}
+.copiado-msg{display:none;text-align:center;color:#14532d;font-weight:800;font-size:1rem;padding:14px;background:#d1fae5;border-radius:12px;margin-bottom:14px;line-height:1.6;border:2px solid #86efac}
 .copiado-msg.show{display:block}
-.separador{text-align:center;color:#9ca3af;font-size:0.85rem;font-weight:700;margin:20px 0;display:flex;align-items:center;gap:10px}
-.separador::before,.separador::after{content:'';flex:1;height:1px;background:#e5e7eb}
 .campo{margin-bottom:14px}
 .campo label{display:block;font-size:1rem;font-weight:700;margin-bottom:7px}
 .campo input{width:100%;border:2px solid #d1d5db;border-radius:12px;padding:15px 16px;font-size:1.05rem;font-family:'Nunito',sans-serif}
 .campo input:focus{outline:none;border-color:#22c55e}
-/* BOTÃO WPP — usa tag <a> para funcionar em todos os dispositivos */
 .btn-wpp{display:flex;width:100%;background:#25D366;color:white;border:none;border-radius:14px;padding:18px;font-size:1.15rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;align-items:center;justify-content:center;gap:10px;text-decoration:none;-webkit-tap-highlight-color:transparent}
 .btn-wpp:active{background:#128C7E}
 .btn-wpp-hint{font-size:0.85rem;color:#9ca3af;text-align:center;margin-top:10px;line-height:1.55}
@@ -137,10 +143,23 @@ footer strong{color:white}
 </div>
 
 <div class="card">
-  <div class="titulo">Como comprar — é simples!</div>
-  <div class="passo"><div class="pnum">1</div><div class="ptxt">Toque no número que quiser na grade abaixo. Pode escolher mais de um!</div></div>
-  <div class="passo"><div class="pnum">2</div><div class="ptxt">Toque no botão verde <strong>"Pagar PIX"</strong> que aparece na parte de baixo da tela.</div></div>
-  <div class="passo"><div class="pnum">3</div><div class="ptxt">Copie a chave PIX, pague no seu banco e toque em <strong>"Enviar comprovante"</strong>. O WhatsApp já abre tudo pronto!</div></div>
+  <div class="titulo">Como participar</div>
+  <div class="passo">
+    <div class="pnum">1</div>
+    <div class="ptxt">Toque no número que quiser na grade abaixo. Pode escolher mais de um!</div>
+  </div>
+  <div class="passo">
+    <div class="pnum">2</div>
+    <div class="ptxt">Toque no botão verde <strong>"Pagar PIX"</strong> que aparece na parte de baixo da tela.</div>
+  </div>
+  <div class="passo">
+    <div class="pnum">3</div>
+    <div class="ptxt">Copie a chave PIX e <strong>faça o pagamento no seu banco</strong>.</div>
+  </div>
+  <div class="passo">
+    <div class="pnum">4</div>
+    <div class="ptxt">Depois de pagar, toque em <strong>"Enviar comprovante"</strong> — o WhatsApp abre sozinho com tudo preenchido!</div>
+  </div>
 </div>
 
 <div class="card">
@@ -154,9 +173,9 @@ footer strong{color:white}
     <div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af">Carregando...</div>
   </div>
   <div class="admin-zona">
-    <button class="btn-admin" onclick="toggleAdmin()">⚙️</button>
+    <button class="btn-admin" onclick="toggleAdmin()">⚙️ Área da organizadora</button>
     <div class="painel-admin" id="painelAdmin">
-      <div class="admin-titulo">🔐 Área da organizadora</div>
+      <div class="admin-titulo">🔐 Acesso restrito</div>
       <div class="admin-sub">Digite a senha para entrar no modo de edição e bloquear os números já vendidos.</div>
       <input class="admin-input" type="password" id="senhaInput" placeholder="••••••••">
       <button class="btn-admin-entrar" onclick="entrarAdmin()">Entrar</button>
@@ -180,35 +199,54 @@ footer strong{color:white}
 
 <div class="overlay" id="overlay">
   <div class="modal">
-    <div class="modal-titulo">💳 Pagar via PIX</div>
-    <p class="modal-sub">Siga os passos abaixo — é rápido e seguro!</p>
+    <div class="modal-titulo">💳 Como pagar</div>
+    <p class="modal-sub">Siga os 3 passos abaixo na ordem certa:</p>
     <div class="resumo" id="resumo"></div>
 
+    <div class="modal-passo">
+      <div class="modal-passo-num">1</div>
+      <div class="modal-passo-txt">
+        <strong>Copie a chave PIX e pague no banco</strong>
+        Toque em "Copiar chave PIX", abra o aplicativo do seu banco, faça um PIX para essa chave e pague o valor indicado.
+      </div>
+    </div>
+
     <div class="pix-card">
-      <div class="pix-label">Chave PIX</div>
+      <div class="pix-label">Chave PIX — Telefone</div>
       <div class="pix-chave">(16) 99378-6996</div>
       <div class="pix-nome">Lívia Roberta Oliveira da Silva</div>
       <div class="pix-valor" id="valorBox">R$ 0,00</div>
     </div>
-
     <button class="btn-copiar-pix" onclick="copiarPix()" id="btnCopiar">
       📋 Copiar chave PIX
     </button>
     <div class="copiado-msg" id="copiadoPix">
-      ✅ Chave copiada!<br>Abra o banco, faça o pagamento e volte aqui.
+      ✅ Chave copiada! Agora abra seu banco e faça o pagamento do valor indicado acima.
     </div>
 
-    <div class="separador">Depois de pagar</div>
-
+    <div class="modal-passo">
+      <div class="modal-passo-num">2</div>
+      <div class="modal-passo-txt">
+        <strong>Preencha seu nome e WhatsApp</strong>
+        Para confirmarmos sua cota após o pagamento.
+      </div>
+    </div>
     <div class="campo"><label>Seu nome completo</label><input type="text" id="nome" placeholder="Ex: Maria das Graças" autocomplete="name"></div>
     <div class="campo"><label>Seu WhatsApp</label><input type="tel" id="fone" placeholder="(16) 99999-9999" autocomplete="tel"></div>
 
-    <!-- TAG <a> em vez de window.open() — funciona em todos os celulares -->
+    <div class="modal-passo">
+      <div class="modal-passo-num">3</div>
+      <div class="modal-passo-txt">
+        <strong>Envie o comprovante do pagamento</strong>
+        Toque no botão verde abaixo — o WhatsApp abre sozinho com a mensagem já pronta. Só mande a foto do comprovante!
+      </div>
+    </div>
+
     <a id="btnWpp" class="btn-wpp" onclick="return prepararWpp(event)">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Enviar comprovante pelo WhatsApp
     </a>
-    <p class="btn-wpp-hint">O WhatsApp abre com a mensagem já pronta.<br>Só mande a foto do comprovante!</p>
+    <p class="btn-wpp-hint">⚠️ Só toque aqui depois de ter pago o PIX!</p>
     <button class="btn-fechar" onclick="fecharModal()">← Voltar e escolher mais números</button>
   </div>
 </div>
@@ -234,9 +272,7 @@ async function carregarCotas(){
     if(!r.ok)throw new Error();
     const d=await r.json();
     vendidos=new Set(Array.isArray(d)?d:[]);
-  }catch(e){
-    vendidos=new Set([4, 7, 11, 12, 13, 20, 27, 69, 81, 91, 101, 103, 111, 118, 148]);
-  }
+  }catch(e){vendidos=new Set([4, 7, 11, 12, 13, 20, 27, 69, 81, 91, 101, 103, 111, 118, 148]);}
   buildGrid();
 }
 
@@ -315,12 +351,10 @@ async function salvarAlteracoes(){
 function abrirModal(){
   if(!escolhidos.length)return;
   const total=escolhidos.length*VALOR;
-  document.getElementById('resumo').innerHTML='🎟️ Número(s): <strong>'+escolhidos.map(pad).join(', ')+'</strong><br>💰 Valor: <strong>R$ '+total+',00</strong>';
+  document.getElementById('resumo').innerHTML='🎟️ Número(s): <strong>'+escolhidos.map(pad).join(', ')+'</strong><br>💰 Valor a pagar: <strong>R$ '+total+',00</strong>';
   document.getElementById('valorBox').textContent='R$ '+total+',00';
   document.getElementById('copiadoPix').classList.remove('show');
   document.getElementById('btnCopiar').textContent='📋 Copiar chave PIX';
-  // PRÉ-MONTA o link do WhatsApp já aqui, antes de qualquer clique
-  const nome='';const fone='';
   const msg=encodeURIComponent('Olá! Quero confirmar minha cota da rifa.\n\nNúmero(s): '+escolhidos.map(pad).join(', ')+'\nValor pago: R$ '+total+',00\n\nSegue o comprovante do PIX!');
   document.getElementById('btnWpp').href='https://wa.me/'+WPP+'?text='+msg;
   document.getElementById('overlay').classList.add('show');
@@ -329,19 +363,17 @@ function abrirModal(){
 function fecharModal(){document.getElementById('overlay').classList.remove('show');}
 
 function copiarPix(){
-  navigator.clipboard.writeText(PIX).then(()=>{
+  const copiar=()=>{
     document.getElementById('copiadoPix').classList.add('show');
     document.getElementById('btnCopiar').textContent='✅ Chave copiada!';
-  }).catch(()=>{
-    // fallback para dispositivos antigos
+  };
+  navigator.clipboard.writeText(PIX).then(copiar).catch(()=>{
     const el=document.createElement('textarea');
     el.value=PIX;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
-    document.getElementById('copiadoPix').classList.add('show');
-    document.getElementById('btnCopiar').textContent='✅ Chave copiada!';
+    copiar();
   });
 }
 
-// Atualiza a mensagem com nome/fone no momento do clique
 function prepararWpp(e){
   const nome=document.getElementById('nome').value.trim();
   const fone=document.getElementById('fone').value.trim();
