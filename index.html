@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rifa 2 — Beneficente</title>
+<title>Rifa 1 — Beneficente</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -39,12 +40,12 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .cota.livre{background:#f9fafb;border-color:#d1d5db;color:#374151}
 .cota.vendida{background:#fee2e2;border-color:#fca5a5;color:#b91c1c;cursor:not-allowed}
 .cota.escolhida{background:#22c55e;border-color:#16a34a;color:white;transform:scale(1.1);box-shadow:0 3px 12px rgba(22,163,74,.4)}
-/* ADMIN NOVO — seleção laranja + registrar comprador + sidebar (apenas admin) */
+/* ADMIN NOVO — seleção laranja + registrar comprador + sidebar */
 .cota.adminsel{background:#fb923c;border-color:#f97316;color:white;transform:scale(1.08);box-shadow:0 3px 12px rgba(249,115,22,.35)}
 .admin-selbar{display:none;background:#f97316;color:white;padding:12px 16px;font-weight:900;font-size:0.95rem;position:sticky;top:52px;z-index:41;align-items:center;justify-content:space-between;gap:10px}
 .admin-selbar.show{display:flex}
 .btn-registrar{background:white;color:#9a3412;border:none;border-radius:10px;padding:10px 14px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
-.sidebar-toggle{position:fixed;right:10px;top:50%;transform:translateY(-50%);background:#22c55e;color:white;border:none;border-radius:999px;padding:12px 14px;font-weight:900;cursor:pointer;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.18);display:none;}
+.sidebar-toggle{display:none;position:fixed;right:10px;top:50%;transform:translateY(-50%);background:#22c55e;color:white;border:none;border-radius:999px;padding:12px 14px;font-weight:900;cursor:pointer;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.18)}
 .sidebar{position:fixed;top:0;right:0;height:100%;width:min(360px,92vw);background:white;box-shadow:-8px 0 30px rgba(0,0,0,.2);transform:translateX(105%);transition:transform .25s ease;z-index:80;display:flex;flex-direction:column}
 .sidebar.show{transform:translateX(0)}
 .sidebar-h{padding:16px;border-bottom:1px solid #eef2f7;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -110,6 +111,15 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 footer{background:#14532d;color:#86efac;text-align:center;padding:22px 20px 100px;font-size:0.9rem}
 footer p{margin-bottom:5px}
 footer strong{color:white}
+
+/* Progresso (gatilho de escassez) */
+.progresso{margin:6px 0 16px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:12px 14px}
+.progresso-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.progresso-txt{font-weight:900;color:#0f172a;font-size:0.95rem}
+.progresso-num{font-weight:900;color:#15803d;font-size:0.95rem;white-space:nowrap}
+.progresso-bar{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.progresso-fill{height:100%;background:#22c55e;border-radius:999px;transition:width .25s ease}
+
 </style>
 </head>
 <body>
@@ -124,7 +134,7 @@ footer strong{color:white}
   <button class="btn-registrar" onclick="registrarComprador()">👤 Registrar comprador</button>
 </div>
 
-<button class="sidebar-toggle" id="sidebarBtn" style="display:none" onclick="toggleSidebar()">📋 COMPRADORES</button>
+<button class="sidebar-toggle" id="sidebarBtn" onclick="toggleSidebar()" style="display:none">📋 COMPRADORES</button>
 <div class="sidebar" id="sidebar">
   <div class="sidebar-h">
     <h3>📋 Compradores</h3>
@@ -144,14 +154,14 @@ footer strong{color:white}
 </div>
 
 <div class="topo">
-  <div class="badge">RIFA 2</div>
+  <div class="badge">RIFA 1</div>
   <h1>Rifa Beneficente</h1>
   <p>Concorra a um <strong>Cooktop Britânia</strong> zero km e ajude nossa família.</p>
 </div>
 
 <div class="card">
   <div class="titulo">O que aconteceu</div>
-  <p style="font-size:1rem;line-height:1.8;color:#333">Na madrugada de <strong>26 de fevereiro</strong>, meu filho Junior, PM, voltava do serviço pela Rodovia SP-318. Ele trabalha em outra cidade e não há transporte público para o trajeto — o carro é o único meio de ir ao trabalho. No caminho, perdeu o controle, bateu na defensa metálica e capotou. Saiu com ferimentos nos braços e o carro ficou destruído.</p>
+  <p style="font-size:1rem;line-height:1.8;color:#333">Na madrugada de <strong>26 de fevereiro</strong>, meu esposo Junior, PM, voltava do serviço pela Rodovia SP-318. Ele trabalha em outra cidade e não há transporte público para o trajeto — o carro é o único meio de ir ao trabalho. No caminho, perdeu o controle, bateu na defensa metálica e capotou. Saiu com ferimentos nos braços e o carro ficou destruído.</p>
 </div>
 
 <div class="card">
@@ -197,7 +207,17 @@ footer strong{color:white}
 
 <div class="card">
   <div class="titulo">Escolha seu número</div>
-  <div class="legenda">
+  
+  <div class="progresso" id="progressoBox">
+    <div class="progresso-top">
+      <span class="progresso-txt" id="progressoTxt">Carregando...</span>
+      <span class="progresso-num" id="progressoNum"></span>
+    </div>
+    <div class="progresso-bar">
+      <div class="progresso-fill" id="progressoFill" style="width:0%"></div>
+    </div>
+  </div>
+<div class="legenda">
     <div class="li"><div class="lc livre"></div>Disponível</div>
     <div class="li"><div class="lc vendida"></div>Vendida</div>
     <div class="li"><div class="lc escolhida"></div>Selecionada</div>
@@ -246,7 +266,7 @@ footer strong{color:white}
 
     <div class="pix-card">
       <div class="pix-label">Chave PIX — Telefone</div>
-      <div class="pix-chave">(16) 99378-6996</div>
+      <div class="pix-chave">(16) 99773-3349</div>
       <div class="pix-nome">Lívia Roberta Oliveira da Silva</div>
       <div class="pix-valor" id="valorBox">R$ 0,00</div>
     </div>
@@ -265,7 +285,7 @@ footer strong{color:white}
       </div>
     </div>
     <div class="campo"><label>Seu nome completo</label><input type="text" id="nome" placeholder="Ex: Maria das Graças" autocomplete="name"></div>
-    <div class="campo"><label>Seu WhatsApp</label><input type="tel" id="fone" placeholder="(16) 99999-9999" autocomplete="tel"></div>
+    <div class="campo"><label>Seu WhatsApp</label><input type="tel" id="fone" placeholder="(16) 99773-3349" autocomplete="tel"></div>
 
     <div class="modal-passo">
       <div class="modal-passo-num">3</div>
@@ -287,17 +307,18 @@ footer strong{color:white}
 <footer>
   <p>Rifa Beneficente — Família do <strong>Junior</strong></p>
   <p>200 cotas · R$ 10,00 cada · Prêmio: Cooktop Britânia</p>
-  <p style="margin-top:5px">Dúvidas? <strong>(16) 99378-6996</strong></p>
+  <p style="margin-top:5px">Dúvidas? <strong>(16) 99773-3349</strong></p>
 </footer>
 
 <script>
-const FB_BASE='https://rifa-junior-4941a-default-rtdb.firebaseio.com/rifa2';
+const FB_BASE='https://rifa-junior-4941a-default-rtdb.firebaseio.com';
 const FB_VENDIDOS=FB_BASE+'/vendidos.json';
 const FB_COMPRADORES=FB_BASE+'/compradores.json';
 const TOTAL=200,VALOR=10;
-const PIX='16993786996',WPP='5516993786996';
+const PIX='16997733349',WPP='5516997733349';
 const SENHA='junior2026';
 let vendidos=new Set(),escolhidos=[],adminAtivo=false,adminSel=[];
+// compradoresPorNumero: { '12': 'Maria', '13': 'Maria', ... }
 let compradoresPorNumero={};
 function pad(n){return String(n).padStart(3,'0')}
 
@@ -313,6 +334,7 @@ function atualizarSidebar(){
   const box=document.getElementById('sidebarBody');
   if(!box) return;
 
+  // Agrupa por nome
   const grupos = {};
   for(const k in compradoresPorNumero){
     const nome = String(compradoresPorNumero[k]||'').trim();
@@ -359,6 +381,7 @@ function registrarComprador(){
     return;
   }
 
+  // Marca todos como vendidos e associa ao comprador
   adminSel.forEach(num=>{
     vendidos.add(num);
     compradoresPorNumero[String(num)] = n;
@@ -366,6 +389,8 @@ function registrarComprador(){
 
   adminSel = [];
   buildGrid();
+    atualizarProgresso();
+atualizarProgresso();
   atualizarSidebar();
   atualizarAdminSelBar();
   atualizar();
@@ -377,22 +402,38 @@ function escapeHtml(str){
   }[s]));
 }
 
+function atualizarProgresso(){
+  // se existir algum elemento de progresso futuramente, fica compatível
+  // (não quebra nada se não existir)
+}
 
 async function carregarCotas(){
   try{
-    const [rv, rc] = await Promise.all([fetch(FB_VENDIDOS), fetch(FB_COMPRADORES)]);
+    const [rv, rc] = await Promise.all([
+      fetch(FB_VENDIDOS),
+      fetch(FB_COMPRADORES)
+    ]);
+
     let dv=null, dc=null;
+
     if(rv.ok) dv = await rv.json();
     if(rc.ok) dc = await rc.json();
+
+    // Normaliza vendidos para NÚMEROS (evita bug de '1' vs 1 vindo do Firebase)
     vendidos = new Set((Array.isArray(dv)?dv:[]).map(x=>Number(x)).filter(x=>Number.isFinite(x)));
+
+    // compradoresPorNumero vem como objeto (ou null)
     compradoresPorNumero = (dc && typeof dc==='object') ? dc : {};
+
   }catch(e){
     vendidos=new Set([]);
     compradoresPorNumero={};
   }
+
   buildGrid();
+  atualizarProgresso();
+  atualizarProgresso();
   atualizarSidebar();
-  atualizar();
 }
 
 function buildGrid(){
@@ -411,6 +452,7 @@ function buildGrid(){
 
 function clicar(n,el){
   if(adminAtivo){
+    // Se já está vendido: tocar desbloqueia na hora
     if(vendidos.has(n)){
       vendidos.delete(n);
       delete compradoresPorNumero[String(n)];
@@ -419,6 +461,8 @@ function clicar(n,el){
       atualizarAdminSelBar();
       return;
     }
+
+    // Se está livre: toca para selecionar/desselecionar (laranja)
     const idx = adminSel.indexOf(n);
     if(idx===-1){
       adminSel.push(n);
@@ -430,6 +474,8 @@ function clicar(n,el){
     atualizarAdminSelBar();
     return;
   }
+
+  // fluxo comprador (seleção verde)
   if(vendidos.has(n))return;
   const idx=escolhidos.indexOf(n);
   if(idx===-1){escolhidos.push(n);el.classList.replace('livre','escolhida');}
@@ -453,14 +499,18 @@ function entrarAdmin(){
     adminAtivo=true;
     document.getElementById('painelAdmin').classList.remove('show');
     document.getElementById('avisoAdmin').classList.add('show');
+
+    // Mostra sidebar APENAS no admin
     const btn=document.getElementById('sidebarBtn');
     if(btn) btn.style.setProperty('display','inline-flex','important');
+
+    // limpa seleção de comprador e seleção admin
     escolhidos=[];
     adminSel=[];
+    atualizar();
     buildGrid();
     atualizarSidebar();
     atualizarAdminSelBar();
-    atualizar();
   }else{
     alert('Senha incorreta. Tente novamente.');
   }
@@ -472,29 +522,39 @@ async function salvarAlteracoes(){
   document.getElementById('sMsg').textContent='Salvando...';
   document.getElementById('sSub').textContent='Aguarde um momento';
   elS.classList.add('show');
+
   try{
     const arr=[...vendidos].sort((a,b)=>a-b);
+
+    // Salva vendidos + compradores (por número) no Firebase
     const [pv, pc] = await Promise.all([
       fetch(FB_VENDIDOS,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(arr)}),
       fetch(FB_COMPRADORES,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(compradoresPorNumero)})
     ]);
+
     if(!pv.ok || !pc.ok) throw new Error('Falha ao salvar');
+
     document.getElementById('sIcone').textContent='✅';
     document.getElementById('sMsg').textContent='Salvo com sucesso!';
     document.getElementById('sSub').textContent='Modo edição desativado';
+
     setTimeout(()=>{
       elS.classList.remove('show');
       adminAtivo=false;
       adminSel=[];
       document.getElementById('avisoAdmin').classList.remove('show');
       document.getElementById('adminSelBar').classList.remove('show');
+
+      // Esconde sidebar fora do admin + fecha painel
       const btn=document.getElementById('sidebarBtn');
       if(btn) btn.style.setProperty('display','none','important');
       toggleSidebar(false);
+
       buildGrid();
       atualizarSidebar();
       atualizar();
     },900);
+
   }catch(e){
     document.getElementById('sIcone').textContent='⚠️';
     document.getElementById('sMsg').textContent='Erro ao salvar';
