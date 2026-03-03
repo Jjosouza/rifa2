@@ -34,11 +34,13 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .lc{width:22px;height:22px;border-radius:5px;flex-shrink:0}
 .lc.livre{background:#f9fafb;border:2px solid #d1d5db}
 .lc.vendida{background:#fca5a5;border:2px solid #f87171}
+.lc.reservada{background:#fef3c7;border:2px solid #f59e0b}
 .lc.escolhida{background:#22c55e;border:2px solid #16a34a}
 .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:7px}
 .cota{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;cursor:pointer;border:2px solid transparent;transition:transform .12s;user-select:none;-webkit-tap-highlight-color:transparent}
 .cota.livre{background:#f9fafb;border-color:#d1d5db;color:#374151}
 .cota.vendida{background:#fee2e2;border-color:#fca5a5;color:#b91c1c;cursor:not-allowed}
+.cota.reservada{background:#fef3c7;border-color:#f59e0b;color:#92400e}
 .cota.escolhida{background:#22c55e;border-color:#16a34a;color:white;transform:scale(1.1);box-shadow:0 3px 12px rgba(22,163,74,.4)}
 /* ADMIN NOVO — seleção laranja + registrar comprador + sidebar */
 .cota.adminsel{background:#fb923c;border-color:#f97316;color:white;transform:scale(1.08);box-shadow:0 3px 12px rgba(249,115,22,.35)}
@@ -64,11 +66,13 @@ body{font-family:'Nunito',sans-serif;background:#f4f4f4;color:#222;font-size:18p
 .painel-admin.show{display:block}
 .admin-titulo{font-size:1.05rem;font-weight:800;color:#713f12;margin-bottom:6px}
 .admin-sub{font-size:0.9rem;color:#92400e;margin-bottom:16px;line-height:1.55}
+.admin-note{margin-top:4px;font-size:0.86rem;color:#a16207;line-height:1.5;font-weight:700}
 .admin-input{width:100%;border:2px solid #fde068;border-radius:10px;padding:14px 15px;font-size:1.2rem;font-family:'Nunito',sans-serif;margin-bottom:12px;text-align:center;letter-spacing:3px}
 .btn-admin-entrar{width:100%;background:#ca8a04;color:white;border:none;border-radius:12px;padding:15px;font-size:1.05rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
 .aviso-admin{display:none;background:#ca8a04;color:white;padding:12px 16px;font-weight:800;font-size:0.9rem;position:sticky;top:0;z-index:40;align-items:center;justify-content:space-between;gap:10px}
 .aviso-admin.show{display:flex}
 .btn-salvar{background:white;color:#92400e;border:none;border-radius:10px;padding:10px 18px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
+.btn-sair-admin{background:transparent;color:white;border:2px solid rgba(255,255,255,.65);border-radius:10px;padding:10px 14px;font-size:0.92rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
 .salvando{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;align-items:center;justify-content:center}
 .salvando.show{display:flex}
 .salvando-box{background:white;border-radius:22px;padding:36px 28px;text-align:center;max-width:290px;width:90%}
@@ -119,6 +123,11 @@ footer strong{color:white}
 .progresso-num{font-weight:900;color:#15803d;font-size:0.95rem;white-space:nowrap}
 .progresso-bar{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
 .progresso-fill{height:100%;background:#22c55e;border-radius:999px;transition:width .25s ease}
+.microaviso{margin:0 0 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;font-size:0.92rem;line-height:1.55;color:#475569}
+.microaviso strong{color:#14532d}
+.sidebar-search{width:100%;border:2px solid #e2e8f0;border-radius:12px;padding:12px 14px;font-size:0.98rem;font-family:'Nunito',sans-serif;margin-bottom:14px}
+.sidebar-search:focus{outline:none;border-color:#22c55e}
+.sidebar-chip{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;font-size:0.82rem;font-weight:800;color:#475569}
 
 </style>
 </head>
@@ -126,7 +135,10 @@ footer strong{color:white}
 
 <div class="aviso-admin" id="avisoAdmin">
   <span>✏️ Modo edição ativo<br><small style="font-weight:600;opacity:0.85">Toque num número para bloquear ou liberar</small></span>
-  <button class="btn-salvar" onclick="salvarAlteracoes()">💾 Salvar</button>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+    <button class="btn-salvar" onclick="salvarAlteracoes()">💾 Salvar</button>
+    <button class="btn-sair-admin" onclick="sairAdmin()">Sair</button>
+  </div>
 </div>
 
 <div class="admin-selbar" id="adminSelBar">
@@ -137,7 +149,7 @@ footer strong{color:white}
 <button class="sidebar-toggle" id="sidebarBtn" onclick="toggleSidebar()" style="display:none">📋 COMPRADORES</button>
 <div class="sidebar" id="sidebar">
   <div class="sidebar-h">
-    <h3>📋 Compradores</h3>
+    <h3>📋 Painel da organizadora</h3>
     <button class="sidebar-x" onclick="toggleSidebar(false)">✕ Fechar</button>
   </div>
   <div class="sidebar-b" id="sidebarBody">
@@ -220,8 +232,10 @@ footer strong{color:white}
 <div class="legenda">
     <div class="li"><div class="lc livre"></div>Disponível</div>
     <div class="li"><div class="lc vendida"></div>Vendida</div>
+    <div class="li"><div class="lc reservada"></div>Reservada</div>
     <div class="li"><div class="lc escolhida"></div>Selecionada</div>
   </div>
+  <div class="microaviso"><strong>Dica rápida:</strong> amarelo significa aguardando comprovante. Selecione seus números e toque em <strong>Pagar PIX</strong>.</div>
   <div class="grade" id="grade">
     <div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af">Carregando...</div>
   </div>
@@ -229,7 +243,8 @@ footer strong{color:white}
     <button class="btn-admin" onclick="toggleAdmin()">⚙️ Área da organizadora</button>
     <div class="painel-admin" id="painelAdmin">
       <div class="admin-titulo">🔐 Acesso restrito</div>
-      <div class="admin-sub">Digite a senha para entrar no modo de edição e bloquear os números já vendidos.</div>
+      <div class="admin-sub">Digite a senha para entrar no modo de edição, ver pendências e confirmar reservas.</div>
+      <div class="admin-note">Neste aparelho, o acesso fica lembrado por 12 horas.</div>
       <input class="admin-input" type="password" id="senhaInput" placeholder="••••••••">
       <button class="btn-admin-entrar" onclick="entrarAdmin()">Entrar</button>
     </div>
@@ -252,15 +267,15 @@ footer strong{color:white}
 
 <div class="overlay" id="overlay">
   <div class="modal">
-    <div class="modal-titulo">💳 Como pagar</div>
-    <p class="modal-sub">Siga os 3 passos abaixo na ordem certa:</p>
+    <div class="modal-titulo">💳 Finalizar reserva</div>
+    <p class="modal-sub">Pague no PIX e, depois, toque no botão verde para reservar seus números e abrir o WhatsApp.</p>
     <div class="resumo" id="resumo"></div>
 
     <div class="modal-passo">
       <div class="modal-passo-num">1</div>
       <div class="modal-passo-txt">
-        <strong>Copie a chave PIX e pague no banco</strong>
-        Toque em "Copiar chave PIX", abra o aplicativo do seu banco, faça um PIX para essa chave e pague o valor indicado.
+        <strong>Copie a chave PIX e faça o pagamento</strong>
+        O valor total já aparece abaixo. Pague primeiro no seu banco.
       </div>
     </div>
 
@@ -281,7 +296,7 @@ footer strong{color:white}
       <div class="modal-passo-num">2</div>
       <div class="modal-passo-txt">
         <strong>Preencha seu nome e WhatsApp</strong>
-        Para confirmarmos sua cota após o pagamento.
+        Esses dados ficam salvos só neste aparelho para facilitar a próxima compra.
       </div>
     </div>
     <div class="campo"><label>Seu nome completo</label><input type="text" id="nome" placeholder="Ex: Maria das Graças" autocomplete="name"></div>
@@ -290,16 +305,16 @@ footer strong{color:white}
     <div class="modal-passo">
       <div class="modal-passo-num">3</div>
       <div class="modal-passo-txt">
-        <strong>Envie o comprovante do pagamento</strong>
-        Toque no botão verde abaixo — o WhatsApp abre sozinho com a mensagem já pronta. Só mande a foto do comprovante!
+        <strong>Reserve seus números e envie o comprovante</strong>
+        O botão verde reserva os números primeiro e depois abre o WhatsApp com a mensagem pronta.
       </div>
     </div>
 
     <a id="btnWpp" class="btn-wpp" onclick="return prepararWpp(event)">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Enviar comprovante pelo WhatsApp
+      Reservar e abrir WhatsApp
     </a>
-    <p class="btn-wpp-hint">⚠️ Só toque aqui depois de ter pago o PIX!</p>
+    <p class="btn-wpp-hint">⚠️ Toque aqui somente depois de pagar o PIX.</p>
     <button class="btn-fechar" onclick="fecharModal()">← Voltar e escolher mais números</button>
   </div>
 </div>
@@ -311,302 +326,728 @@ footer strong{color:white}
 </footer>
 
 <script>
-const FB_BASE='https://rifa-junior-4941a-default-rtdb.firebaseio.com';
-const FB_VENDIDOS=FB_BASE+'/vendidos.json';
-const FB_COMPRADORES=FB_BASE+'/compradores.json';
-const TOTAL=200,VALOR=10;
-const PIX = '16997733349',WPP='5516993786996';
-const SENHA='junior2026';
-let vendidos=new Set(),escolhidos=[],adminAtivo=false,adminSel=[];
-// compradoresPorNumero: { '12': 'Maria', '13': 'Maria', ... }
-let compradoresPorNumero={};
-function pad(n){return String(n).padStart(3,'0')}
+/* =========================
+   RIFA 2 — JS (seguro)
+   - Namespace: /rifa2
+   - Sem Firebase SDK
+   - Sem listeners realtime
+   - Sem escrita no carregamento
+   ========================= */
 
+const FB_BASE = 'https://rifa-junior-4941a-default-rtdb.firebaseio.com';
+const RIFA_ROOT = 'rifa2';
+const FB_VENDIDOS = `${FB_BASE}/${RIFA_ROOT}/vendidos.json`;
+const FB_COMPRADORES = `${FB_BASE}/${RIFA_ROOT}/compradores.json`;
+const FB_RESERVAS = `${FB_BASE}/${RIFA_ROOT}/reservas.json`;
 
-function toggleSidebar(force){
-  if(!adminAtivo) return; // sidebar só no admin
-  const sb=document.getElementById('sidebar');
-  const show = (typeof force==='boolean') ? force : !sb.classList.contains('show');
-  sb.classList.toggle('show', show);
+const TOTAL = 200;
+const VALOR = 10;
+const PIX = '16997733349';
+const WPP = '5516993786996';
+const SENHA = 'junior2026';
+const ADMIN_SESSION_KEY = 'rifa2_admin_session';
+const COMPRADOR_DRAFT_KEY = 'rifa2_comprador_draft';
+const ADMIN_SESSION_TTL = 12 * 60 * 60 * 1000;
+
+let vendidosSet = new Set();
+let compradoresPorNumero = {};
+let reservasPorNumero = {};
+let escolhidosSet = new Set();
+let adminAtivo = false;
+let adminSelSet = new Set();
+let sidebarFiltro = '';
+
+const byId = (id) => document.getElementById(id);
+
+function pad(n){ return String(n).padStart(3, '0'); }
+function onlyDigits(value){ return String(value || '').replace(/\D+/g, ''); }
+function normalizeNumero(value){
+  const digits = onlyDigits(value);
+  if(!digits) return null;
+  const num = Number(digits);
+  if(!Number.isInteger(num) || num < 1 || num > TOTAL) return null;
+  return pad(num);
 }
-
-function atualizarSidebar(){
-  const box=document.getElementById('sidebarBody');
-  if(!box) return;
-
-  // Agrupa por nome
-  const grupos = {};
-  for(const k in compradoresPorNumero){
-    const nome = String(compradoresPorNumero[k]||'').trim();
-    const num = Number(k);
-    if(!nome || !Number.isFinite(num)) continue;
-    (grupos[nome] ||= []).push(num);
+function normalizeVendidosList(list){
+  if(!Array.isArray(list)) return new Set();
+  const normalized = new Set();
+  for(const item of list){
+    const num = normalizeNumero(item);
+    if(num) normalized.add(num);
   }
-
-  const nomes = Object.keys(grupos).sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  if(nomes.length===0){
-    box.innerHTML='<p style="color:#64748b;font-weight:800">Ainda não há compradores registrados.</p>';
-    return;
-  }
-
-  box.innerHTML = nomes.map(nome=>{
-    const nums = grupos[nome].sort((a,b)=>a-b).map(pad).join(', ');
-    return '<div class="comp"><div class="comp-nome">👤 '+escapeHtml(nome)+'</div><div class="comp-nums">🎟️ '+nums+'</div></div>';
-  }).join('');
+  return normalized;
 }
-
-function atualizarAdminSelBar(){
-  const bar=document.getElementById('adminSelBar');
-  if(!bar) return;
-  if(adminAtivo && adminSel.length>0){
-    bar.classList.add('show');
-    document.getElementById('adminSelCount').textContent=String(adminSel.length);
-    document.getElementById('adminSelNums').textContent=adminSel.slice().sort((a,b)=>a-b).map(pad).join(', ');
-  }else{
-    bar.classList.remove('show');
+function normalizeCompradoresMap(map){
+  if(!map || typeof map !== 'object') return {};
+  const normalized = {};
+  for(const [key, value] of Object.entries(map)){
+    const num = normalizeNumero(key);
+    if(!num) continue;
+    normalized[num] = typeof value === 'string' ? value : String(value ?? '');
   }
+  return normalized;
 }
-
-function registrarComprador(){
-  if(!adminAtivo) return;
-  if(adminSel.length===0){
-    alert('Selecione um ou mais números livres (laranja) antes de registrar o comprador.');
-    return;
+function normalizeReservasMap(map){
+  if(!map || typeof map !== 'object') return {};
+  const normalized = {};
+  for(const [key, value] of Object.entries(map)){
+    const num = normalizeNumero(key);
+    if(!num || !value || typeof value !== 'object') continue;
+    normalized[num] = {
+      nome: String(value.nome || '').trim(),
+      fone: String(value.fone || '').trim(),
+      status: value.status === 'reservada' ? 'reservada' : 'reservada',
+      ts: Number(value.ts) || Date.now()
+    };
   }
-  const nome = prompt('Nome do comprador (digite uma vez):');
-  if(nome===null) return;
-  const n = nome.trim();
-  if(!n){
-    alert('Nome inválido.');
-    return;
-  }
-
-  // Marca todos como vendidos e associa ao comprador
-  adminSel.forEach(num=>{
-    vendidos.add(num);
-    compradoresPorNumero[String(num)] = n;
-  });
-
-  adminSel = [];
-  buildGrid();
-    atualizarProgresso();
-atualizarProgresso();
-  atualizarSidebar();
-  atualizarAdminSelBar();
-  atualizar();
+  return normalized;
 }
-
 function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, s=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[s]));
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+function sortNums(arr){
+  return [...arr].sort((a, b) => Number(a) - Number(b));
+}
+function getCompradorNome(num){
+  const nome = compradoresPorNumero[num];
+  return typeof nome === 'string' && nome.trim() ? nome.trim() : '—';
+}
+function saveAdminSession(){
+  try{
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ expiresAt: Date.now() + ADMIN_SESSION_TTL }));
+  }catch(_err){}
+}
+function clearAdminSession(){
+  try{
+    localStorage.removeItem(ADMIN_SESSION_KEY);
+  }catch(_err){}
+}
+function hasValidAdminSession(){
+  try{
+    const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+    if(!raw) return false;
+    const parsed = JSON.parse(raw);
+    if(!parsed || typeof parsed.expiresAt !== 'number') return false;
+    if(parsed.expiresAt < Date.now()){
+      localStorage.removeItem(ADMIN_SESSION_KEY);
+      return false;
+    }
+    return true;
+  }catch(_err){
+    return false;
+  }
+}
+function saveCompradorDraft(){
+  const nome = (byId('nome')?.value || '').trim();
+  const fone = (byId('fone')?.value || '').trim();
+  try{
+    localStorage.setItem(COMPRADOR_DRAFT_KEY, JSON.stringify({ nome, fone }));
+  }catch(_err){}
+}
+function restoreCompradorDraft(){
+  try{
+    const raw = localStorage.getItem(COMPRADOR_DRAFT_KEY);
+    if(!raw) return;
+    const parsed = JSON.parse(raw);
+    if(byId('nome') && typeof parsed?.nome === 'string') byId('nome').value = parsed.nome;
+    if(byId('fone') && typeof parsed?.fone === 'string') byId('fone').value = parsed.fone;
+  }catch(_err){}
+}
+function bindCompradorDraft(){
+  const nome = byId('nome');
+  const fone = byId('fone');
+  if(nome) nome.addEventListener('input', saveCompradorDraft);
+  if(fone) fone.addEventListener('input', saveCompradorDraft);
+}
+function ensureSidebarSearchBinding(){
+  const input = byId('sidebarSearch');
+  if(!input || input.dataset.bound === '1') return;
+  input.dataset.bound = '1';
+  input.addEventListener('input', (event) => {
+    sidebarFiltro = String(event.target.value || '').trim().toLowerCase();
+    renderSidebar();
+  });
+}
+function setAdminMode(active){
+  const aviso = byId('avisoAdmin');
+  const sidebarBtn = byId('sidebarBtn');
+  const painel = byId('painelAdmin');
+
+  adminAtivo = active;
+  if(!active) adminSelSet.clear();
+  if(painel && active) painel.style.display = 'none';
+  if(aviso) aviso.classList.toggle('show', active);
+  if(sidebarBtn) sidebarBtn.style.display = active ? 'block' : 'none';
+  atualizarAdminSelUI();
+  renderGrade();
+  renderSidebar();
 }
 
-function atualizarProgresso(){
-  // se existir algum elemento de progresso futuramente, fica compatível
-  // (não quebra nada se não existir)
+function showSaving(msg='Salvando...', sub='Aguarde um momento', icon='⏳'){
+  const box = byId('salvando');
+  const msgEl = byId('sMsg');
+  const subEl = byId('sSub');
+  const iconEl = byId('sIcone');
+  if(!box || !msgEl || !subEl || !iconEl) return;
+  msgEl.textContent = msg;
+  subEl.textContent = sub;
+  iconEl.textContent = icon;
+  box.classList.add('show');
+}
+function hideSaving(){
+  const box = byId('salvando');
+  if(box) box.classList.remove('show');
+}
+function showSaved(msg='Salvo com sucesso!'){
+  showSaving(msg, 'Tudo certo ✅', '✅');
+  setTimeout(hideSaving, 900);
+}
+function showCopiedPixMessage(){
+  const msg = byId('copiadoPix');
+  if(!msg) return;
+  msg.classList.add('show');
+  setTimeout(() => msg.classList.remove('show'), 2200);
+}
+
+async function fbGet(url){
+  const response = await fetch(url, { method: 'GET' });
+  if(!response.ok) throw new Error(`GET falhou: ${response.status}`);
+  return response.json();
+}
+async function fbPut(url, data){
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if(!response.ok) throw new Error(`PUT falhou: ${response.status}`);
+}
+async function fbPatch(url, data){
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if(!response.ok) throw new Error(`PATCH falhou: ${response.status}`);
+}
+async function fbDelete(url){
+  const response = await fetch(url, { method: 'DELETE' });
+  if(!response.ok) throw new Error(`DELETE falhou: ${response.status}`);
 }
 
 async function carregarCotas(){
   try{
-    const [rv, rc] = await Promise.all([
-      fetch(FB_VENDIDOS),
-      fetch(FB_COMPRADORES)
+    const [vendidos, compradores, reservas] = await Promise.all([
+      fbGet(FB_VENDIDOS),
+      fbGet(FB_COMPRADORES),
+      fbGet(FB_RESERVAS)
     ]);
 
-    let dv=null, dc=null;
+    vendidosSet = normalizeVendidosList(vendidos);
+    compradoresPorNumero = normalizeCompradoresMap(compradores);
+    reservasPorNumero = normalizeReservasMap(reservas);
 
-    if(rv.ok) dv = await rv.json();
-    if(rc.ok) dc = await rc.json();
-
-    // Normaliza vendidos para NÚMEROS (evita bug de '1' vs 1 vindo do Firebase)
-    vendidos = new Set((Array.isArray(dv)?dv:[]).map(x=>Number(x)).filter(x=>Number.isFinite(x)));
-
-    // compradoresPorNumero vem como objeto (ou null)
-    compradoresPorNumero = (dc && typeof dc==='object') ? dc : {};
-
-  }catch(e){
-    vendidos=new Set([]);
-    compradoresPorNumero={};
-  }
-
-  buildGrid();
-  atualizarProgresso();
-  atualizarProgresso();
-  atualizarSidebar();
-}
-
-function buildGrid(){
-  const g=document.getElementById('grade');
-  g.innerHTML='';
-  for(let i=1;i<=TOTAL;i++){
-    const d=document.createElement('div');
-    const isVendida = vendidos.has(i);
-    d.className='cota '+(isVendida?'vendida':'livre');
-    if(adminAtivo && !isVendida && adminSel.includes(i)) d.classList.add('adminsel');
-    d.textContent=pad(i);
-    d.onclick=()=>clicar(i,d);
-    g.appendChild(d);
+    renderGrade();
+    atualizarBarraSelecao();
+    atualizarProgresso();
+    renderSidebar();
+  }catch(err){
+    console.error(err);
+    const grade = byId('grade');
+    if(grade){
+      grade.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#ef4444;font-weight:800">Erro ao carregar. Abra o Console (F12) para detalhes.</div>';
+    }
   }
 }
 
-function clicar(n,el){
+function renderGrade(){
+  const grade = byId('grade');
+  if(!grade) return;
+
+  grade.innerHTML = '';
+
+  for(let i = 1; i <= TOTAL; i += 1){
+    const num = pad(i);
+    const el = document.createElement('div');
+    el.className = 'cota';
+
+    if(vendidosSet.has(num)) el.classList.add('vendida');
+    else if(reservasPorNumero[num]) el.classList.add('reservada');
+    else el.classList.add('livre');
+
+    if(!adminAtivo && escolhidosSet.has(num)) el.classList.add('escolhida');
+    if(adminAtivo && adminSelSet.has(num)) el.classList.add('adminsel');
+
+    el.textContent = num;
+    el.addEventListener('click', () => onCotaClick(num));
+    grade.appendChild(el);
+  }
+}
+
+function onCotaClick(num){
   if(adminAtivo){
-    // Se já está vendido: tocar desbloqueia na hora
-    if(vendidos.has(n)){
-      vendidos.delete(n);
-      delete compradoresPorNumero[String(n)];
-      el.className='cota livre';
-      atualizarSidebar();
-      atualizarAdminSelBar();
+    if(reservasPorNumero[num]){
+      toggleSidebar(true);
       return;
     }
 
-    // Se está livre: toca para selecionar/desselecionar (laranja)
-    const idx = adminSel.indexOf(n);
-    if(idx===-1){
-      adminSel.push(n);
-      el.classList.add('adminsel');
-    }else{
-      adminSel.splice(idx,1);
-      el.classList.remove('adminsel');
-    }
-    atualizarAdminSelBar();
+    if(adminSelSet.has(num)) adminSelSet.delete(num);
+    else adminSelSet.add(num);
+
+    atualizarAdminSelUI();
+    renderGrade();
     return;
   }
 
-  // fluxo comprador (seleção verde)
-  if(vendidos.has(n))return;
-  const idx=escolhidos.indexOf(n);
-  if(idx===-1){escolhidos.push(n);el.classList.replace('livre','escolhida');}
-  else{escolhidos.splice(idx,1);el.classList.replace('escolhida','livre');}
-  atualizar();
+  if(vendidosSet.has(num) || reservasPorNumero[num]) return;
+
+  if(escolhidosSet.has(num)) escolhidosSet.delete(num);
+  else escolhidosSet.add(num);
+
+  atualizarBarraSelecao();
+  renderGrade();
 }
 
-function atualizar(){
-  const bar=document.getElementById('barra');
-  if(escolhidos.length>0&&!adminAtivo){
-    bar.classList.add('show');
-    document.getElementById('bNums').textContent=escolhidos.map(pad).join(', ');
-    document.getElementById('bTotal').textContent='R$ '+escolhidos.length*VALOR;
-  }else{bar.classList.remove('show');}
+function atualizarBarraSelecao(){
+  const nums = sortNums(Array.from(escolhidosSet));
+  const barra = byId('barra');
+  const bNums = byId('bNums');
+  const bTotal = byId('bTotal');
+
+  if(bNums) bNums.textContent = nums.length ? nums.join(', ') : '—';
+  if(bTotal) bTotal.textContent = `R$ ${nums.length * VALOR}`;
+  if(barra) barra.classList.toggle('show', nums.length > 0);
 }
 
-function toggleAdmin(){document.getElementById('painelAdmin').classList.toggle('show');}
+function atualizarProgresso(){
+  const vendidos = vendidosSet.size;
+  const reservados = Object.keys(reservasPorNumero).length;
+  const totalOcupado = vendidos + reservados;
+  const perc = Math.min(100, (totalOcupado / TOTAL) * 100);
 
-function entrarAdmin(){
-  if(document.getElementById('senhaInput').value===SENHA){
-    adminAtivo=true;
-    document.getElementById('painelAdmin').classList.remove('show');
-    document.getElementById('avisoAdmin').classList.add('show');
+  const fill = byId('progressoFill');
+  const txt = byId('progressoTxt');
+  const num = byId('progressoNum');
 
-    // Mostra sidebar APENAS no admin
-    const btn=document.getElementById('sidebarBtn');
-    if(btn) btn.style.setProperty('display','inline-flex','important');
-
-    // limpa seleção de comprador e seleção admin
-    escolhidos=[];
-    adminSel=[];
-    atualizar();
-    buildGrid();
-    atualizarSidebar();
-    atualizarAdminSelBar();
-  }else{
-    alert('Senha incorreta. Tente novamente.');
-  }
-}
-
-async function salvarAlteracoes(){
-  const elS=document.getElementById('salvando');
-  document.getElementById('sIcone').textContent='⏳';
-  document.getElementById('sMsg').textContent='Salvando...';
-  document.getElementById('sSub').textContent='Aguarde um momento';
-  elS.classList.add('show');
-
-  try{
-    const arr=[...vendidos].sort((a,b)=>a-b);
-
-    // Salva vendidos + compradores (por número) no Firebase
-    const [pv, pc] = await Promise.all([
-      fetch(FB_VENDIDOS,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(arr)}),
-      fetch(FB_COMPRADORES,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(compradoresPorNumero)})
-    ]);
-
-    if(!pv.ok || !pc.ok) throw new Error('Falha ao salvar');
-
-    document.getElementById('sIcone').textContent='✅';
-    document.getElementById('sMsg').textContent='Salvo com sucesso!';
-    document.getElementById('sSub').textContent='Modo edição desativado';
-
-    setTimeout(()=>{
-      elS.classList.remove('show');
-      adminAtivo=false;
-      adminSel=[];
-      document.getElementById('avisoAdmin').classList.remove('show');
-      document.getElementById('adminSelBar').classList.remove('show');
-
-      // Esconde sidebar fora do admin + fecha painel
-      const btn=document.getElementById('sidebarBtn');
-      if(btn) btn.style.setProperty('display','none','important');
-      toggleSidebar(false);
-
-      buildGrid();
-      atualizarSidebar();
-      atualizar();
-    },900);
-
-  }catch(e){
-    document.getElementById('sIcone').textContent='⚠️';
-    document.getElementById('sMsg').textContent='Erro ao salvar';
-    document.getElementById('sSub').textContent='Verifique sua internet e tente novamente';
-    setTimeout(()=>elS.classList.remove('show'),1400);
-  }
+  if(fill) fill.style.width = `${perc}%`;
+  if(txt) txt.textContent = `${totalOcupado} / ${TOTAL} (vendidos + reservados)`;
+  if(num) num.textContent = `${Math.round(perc)}%`;
 }
 
 function abrirModal(){
-  if(!escolhidos.length)return;
-  const total=escolhidos.length*VALOR;
-  document.getElementById('resumo').innerHTML='🎟️ Número(s): <strong>'+escolhidos.map(pad).join(', ')+'</strong><br>💰 Valor a pagar: <strong>R$ '+total+',00</strong>';
-  document.getElementById('valorBox').textContent='R$ '+total+',00';
-  document.getElementById('copiadoPix').classList.remove('show');
-  document.getElementById('btnCopiar').textContent='📋 Copiar chave PIX';
-  const msg=encodeURIComponent('Olá! Quero confirmar minha cota da rifa.\n\nNúmero(s): '+escolhidos.map(pad).join(', ')+'\nValor pago: R$ '+total+',00\n\nSegue o comprovante do PIX!');
-  document.getElementById('btnWpp').href='https://wa.me/'+WPP+'?text='+msg;
-  document.getElementById('overlay').classList.add('show');
+  const overlay = byId('overlay');
+  const resumo = byId('resumo');
+  const valorBox = byId('valorBox');
+  const nums = sortNums(Array.from(escolhidosSet));
+  if(!overlay) return;
+
+  if(resumo){
+    resumo.innerHTML = nums.length
+      ? `<div style="font-weight:900">Números:</div><div style="margin-top:6px">${nums.join(', ')}</div>`
+      : '<div style="color:#ef4444;font-weight:900">Nenhum número selecionado.</div>';
+  }
+  if(valorBox) valorBox.textContent = `R$ ${nums.length * VALOR}`;
+
+  overlay.classList.add('show');
 }
 
-function fecharModal(){document.getElementById('overlay').classList.remove('show');}
-
-function copiarPix(){
-  const copiar=()=>{
-    document.getElementById('copiadoPix').classList.add('show');
-    document.getElementById('btnCopiar').textContent='✅ Chave copiada!';
-  };
-  navigator.clipboard.writeText(PIX).then(copiar).catch(()=>{
-    const el=document.createElement('textarea');
-    el.value=PIX;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
-    copiar();
-  });
+function fecharModal(){
+  const overlay = byId('overlay');
+  if(overlay) overlay.classList.remove('show');
 }
 
-function prepararWpp(e){
-  const nome=document.getElementById('nome').value.trim();
-  const fone=document.getElementById('fone').value.trim();
-  if(!nome||!fone){
-    e.preventDefault();
-    alert('Por favor, preencha seu nome e WhatsApp antes de continuar.');
+async function copiarPix(){
+  try{
+    await navigator.clipboard.writeText(PIX);
+    showCopiedPixMessage();
+    showSaved('Chave PIX copiada ✅');
+  }catch(_err){
+    const tmp = document.createElement('textarea');
+    tmp.value = PIX;
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand('copy');
+    document.body.removeChild(tmp);
+    showCopiedPixMessage();
+    showSaved('Chave PIX copiada ✅');
+  }
+}
+
+async function prepararWpp(event){
+  if(event) event.preventDefault();
+
+  try{
+    const nums = sortNums(Array.from(escolhidosSet));
+    if(nums.length === 0){
+      showSaving('Selecione pelo menos 1 número', 'Depois toque em "Pagar PIX"', '⚠️');
+      setTimeout(hideSaving, 900);
+      return false;
+    }
+
+    const nome = (byId('nome')?.value || '').trim();
+    const foneRaw = (byId('fone')?.value || '').trim();
+    const fone = onlyDigits(foneRaw);
+
+    if(!nome || !fone){
+      showSaving('Preencha nome e WhatsApp', 'No modal do PIX, antes de enviar', '⚠️');
+      setTimeout(hideSaving, 1200);
+      abrirModal();
+      return false;
+    }
+
+    showSaving('Reservando números...', 'Salvando no sistema antes de abrir o WhatsApp', '⏳');
+
+    const reservasAtuais = await fbGet(FB_RESERVAS);
+    const vendidosAtuais = await fbGet(FB_VENDIDOS);
+    const vendidosAtuaisSet = normalizeVendidosList(vendidosAtuais);
+    const reservasAtuaisObj = normalizeReservasMap(reservasAtuais);
+
+    const indisponiveis = nums.filter((num) => vendidosAtuaisSet.has(num) || Boolean(reservasAtuaisObj[num]));
+    if(indisponiveis.length){
+      await carregarCotas();
+      showSaving('Alguns números não estão mais disponíveis', `Indisponíveis: ${indisponiveis.join(', ')}`, '⚠️');
+      setTimeout(hideSaving, 1600);
+      return false;
+    }
+
+    const now = Date.now();
+    const compradorPatch = {};
+    saveCompradorDraft();
+
+    for(const num of nums){
+      await fbPut(`${FB_BASE}/${RIFA_ROOT}/reservas/${num}.json`, {
+        nome,
+        fone,
+        status: 'reservada',
+        ts: now
+      });
+      compradorPatch[num] = nome;
+    }
+
+    await fbPatch(FB_COMPRADORES, compradorPatch);
+
+    for(const num of nums){
+      reservasPorNumero[num] = { nome, fone, status: 'reservada', ts: now };
+      compradoresPorNumero[num] = nome;
+      escolhidosSet.delete(num);
+    }
+
+    atualizarBarraSelecao();
+    atualizarProgresso();
+    renderGrade();
+    renderSidebar();
+    hideSaving();
+
+    const msg =
+      `Olá! Enviei o comprovante do PIX da Rifa 2.\n` +
+      `Nome: ${nome}\n` +
+      `WhatsApp: ${foneRaw}\n` +
+      `Números: ${nums.join(', ')}\n\n` +
+      'Obs: meus números ficaram reservados aguardando confirmação.';
+
+    const url = `https://wa.me/${WPP}?text=${encodeURIComponent(msg)}`;
+    window.location.href = url;
+    return false;
+  }catch(err){
+    console.error(err);
+    showSaving('Erro ao reservar', 'Abra o Console (F12) para ver detalhes', '❌');
+    setTimeout(hideSaving, 1600);
     return false;
   }
-  const total=escolhidos.length*VALOR;
-  const msg=encodeURIComponent('Olá! Quero confirmar minha cota da rifa.\n\nNome: '+nome+'\nWhatsApp: '+fone+'\nNúmero(s): '+escolhidos.map(pad).join(', ')+'\nValor pago: R$ '+total+',00\n\nSegue o comprovante do PIX!');
-  document.getElementById('btnWpp').href='https://wa.me/'+WPP+'?text='+msg;
-  fecharModal();
-  return true;
 }
 
-document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)fecharModal();});
-carregarCotas();
-setInterval(()=>{if(!adminAtivo)carregarCotas();},30000);
+function toggleAdmin(){
+  const painel = byId('painelAdmin');
+  if(!painel) return;
+  painel.style.display = painel.style.display === 'block' ? 'none' : 'block';
+}
+
+function entrarAdmin(){
+  const senha = (byId('senhaInput')?.value || '').trim();
+
+  if(senha !== SENHA){
+    showSaving('Senha incorreta', 'Tente novamente', '❌');
+    setTimeout(hideSaving, 900);
+    return;
+  }
+
+  saveAdminSession();
+  setAdminMode(true);
+  showSaved('Acesso liberado neste aparelho ✅');
+}
+
+function sairAdmin(){
+  clearAdminSession();
+  setAdminMode(false);
+  toggleSidebar(false);
+}
+
+function atualizarAdminSelUI(){
+  const bar = byId('adminSelBar');
+  const count = byId('adminSelCount');
+  const nums = byId('adminSelNums');
+  const arr = sortNums(Array.from(adminSelSet));
+
+  if(count) count.textContent = String(arr.length);
+  if(nums) nums.textContent = arr.length ? arr.join(', ') : '';
+  if(bar) bar.classList.toggle('show', adminAtivo && arr.length > 0);
+}
+
+async function salvarAlteracoes(){
+  if(!adminAtivo){
+    toggleAdmin();
+    return;
+  }
+
+  const selecionados = sortNums(Array.from(adminSelSet));
+  if(selecionados.length === 0){
+    showSaving('Nenhum número selecionado', 'Toque nos números laranja para editar', '⚠️');
+    setTimeout(hideSaving, 1200);
+    return;
+  }
+
+  try{
+    showSaving('Salvando...', 'Atualizando vendidos e compradores', '⏳');
+
+    const [vendidosAtual, compradoresAtual] = await Promise.all([
+      fbGet(FB_VENDIDOS),
+      fbGet(FB_COMPRADORES)
+    ]);
+
+    const novoSet = normalizeVendidosList(vendidosAtual);
+    const compradores = normalizeCompradoresMap(compradoresAtual);
+
+    for(const num of selecionados){
+      if(novoSet.has(num)){
+        novoSet.delete(num);
+        delete compradores[num];
+      }else{
+        novoSet.add(num);
+        if(!compradores[num]) compradores[num] = compradoresPorNumero[num] || '—';
+      }
+    }
+
+    await fbPut(FB_VENDIDOS, sortNums(Array.from(novoSet)));
+    await fbPut(FB_COMPRADORES, compradores);
+
+    vendidosSet = novoSet;
+    compradoresPorNumero = compradores;
+    adminSelSet.clear();
+    atualizarAdminSelUI();
+    renderGrade();
+    renderSidebar();
+    showSaved('Salvo com sucesso!');
+  }catch(err){
+    console.error(err);
+    showSaving('Erro ao salvar', 'Abra o Console (F12) para detalhes', '❌');
+    setTimeout(hideSaving, 1400);
+    return;
+  }
+
+  setTimeout(() => {
+    sairAdmin();
+    carregarCotas();
+  }, 400);
+}
+
+function registrarComprador(){
+  if(!adminAtivo || adminSelSet.size === 0){
+    showSaving('Selecione números no admin', 'Toque nos números laranja e depois registre', '⚠️');
+    setTimeout(hideSaving, 1200);
+    return;
+  }
+
+  const nome = window.prompt('Nome do comprador:');
+  if(!nome || !nome.trim()) return;
+
+  for(const num of adminSelSet){
+    compradoresPorNumero[num] = nome.trim();
+  }
+
+  showSaved('Comprador vinculado ✅');
+  renderSidebar();
+}
+
+function toggleSidebar(force){
+  const sidebar = byId('sidebar');
+  if(!sidebar) return;
+  const show = typeof force === 'boolean' ? force : !sidebar.classList.contains('show');
+  sidebar.classList.toggle('show', show);
+  if(show) ensureSidebarSearchBinding();
+}
+
+function renderSidebar(){
+  const body = byId('sidebarBody');
+  if(!body) return;
+  const hadSearchFocus = document.activeElement?.id === 'sidebarSearch';
+  const previousSearch = hadSearchFocus ? document.activeElement : null;
+  const previousStart = previousSearch && typeof previousSearch.selectionStart === 'number' ? previousSearch.selectionStart : null;
+  const previousEnd = previousSearch && typeof previousSearch.selectionEnd === 'number' ? previousSearch.selectionEnd : null;
+
+  const grupos = new Map();
+  for(const [num, reserva] of Object.entries(reservasPorNumero || {})){
+    const nome = (reserva?.nome || '').trim() || 'Sem nome';
+    const fone = (reserva?.fone || '').trim() || '';
+    const key = `${nome}||${fone}`;
+    if(!grupos.has(key)) grupos.set(key, { nome, fone, nums: [] });
+    grupos.get(key).nums.push(num);
+  }
+
+  const vendidosPorComprador = new Map();
+  for(const num of vendidosSet){
+    const nome = getCompradorNome(num);
+    if(!vendidosPorComprador.has(nome)) vendidosPorComprador.set(nome, []);
+    vendidosPorComprador.get(nome).push(num);
+  }
+
+  let html = `<input class="sidebar-search" id="sidebarSearch" type="search" placeholder="Buscar por nome ou número" value="${escapeHtml(sidebarFiltro)}">`;
+  html += '<div style="margin-bottom:16px"><div style="font-weight:900;color:#0f172a;margin-bottom:8px">⏳ Pendências (reservas)</div>';
+
+  if(grupos.size === 0){
+    html += '<div style="color:#64748b;font-weight:800">Nenhuma pendência.</div>';
+  }else{
+    const gruposOrdenados = Array.from(grupos.values())
+      .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+      .filter((grupo) => {
+        if(!sidebarFiltro) return true;
+        const haystack = `${grupo.nome} ${grupo.fone} ${grupo.nums.join(' ')}`.toLowerCase();
+        return haystack.includes(sidebarFiltro);
+      });
+    if(gruposOrdenados.length === 0){
+      html += '<div style="color:#64748b;font-weight:800">Nenhuma pendência encontrada para essa busca.</div>';
+    }
+    for(const grupo of gruposOrdenados){
+      const nums = sortNums(grupo.nums);
+      const foneFmt = grupo.fone ? ` <span style="color:#64748b;font-weight:800">(${escapeHtml(grupo.fone)})</span>` : '';
+      html += `<div style="border:2px solid #fde68a;background:#fffbeb;border-radius:12px;padding:12px;margin-bottom:10px">
+        <div style="font-weight:900;color:#92400e;margin-bottom:8px">${escapeHtml(grupo.nome)}${foneFmt}</div>
+        <div style="margin-bottom:10px"><span class="sidebar-chip">${nums.length} número${nums.length > 1 ? 's' : ''}</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+          ${nums.map((n) => `<span style="padding:6px 10px;border-radius:999px;background:#fef3c7;border:1px solid #f59e0b;font-weight:900;color:#92400e">${n}</span>`).join('')}
+        </div>
+        ${adminAtivo
+          ? `<button type="button" style="width:100%;padding:10px 12px;border-radius:10px;border:0;background:#16a34a;color:#fff;font-weight:900;cursor:pointer" onclick="confirmarPendenciaGrupo('${encodeURIComponent(grupo.nome)}','${encodeURIComponent(grupo.fone)}')">✅ Confirmar tudo (${nums.length})</button>`
+          : '<div style="font-weight:800;color:#92400e">Entre no admin para confirmar.</div>'}
+      </div>`;
+    }
+  }
+
+  html += '</div><div><div style="font-weight:900;color:#0f172a;margin:6px 0 8px">📌 Vendidos</div>';
+
+  if(vendidosPorComprador.size === 0){
+    html += '<div style="color:#64748b;font-weight:800">Nenhuma venda registrada.</div>';
+  }else{
+    const entries = Array.from(vendidosPorComprador.entries())
+      .sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'))
+      .filter(([nome, nums]) => {
+        if(!sidebarFiltro) return true;
+        const haystack = `${nome} ${nums.join(' ')}`.toLowerCase();
+        return haystack.includes(sidebarFiltro);
+      });
+    if(entries.length === 0){
+      html += '<div style="color:#64748b;font-weight:800">Nenhum vendido encontrado para essa busca.</div>';
+    }
+    for(const [nome, nums] of entries){
+      html += `<div style="border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff">
+        <div style="font-weight:900">${escapeHtml(nome)}</div>
+        <div style="color:#64748b;font-weight:800;margin-top:4px">${escapeHtml(sortNums(nums).join(', '))}</div>
+      </div>`;
+    }
+  }
+
+  html += '</div>';
+  body.innerHTML = html;
+  ensureSidebarSearchBinding();
+  if(hadSearchFocus){
+    const input = byId('sidebarSearch');
+    if(input){
+      input.focus();
+      if(previousStart !== null && previousEnd !== null){
+        input.setSelectionRange(previousStart, previousEnd);
+      }
+    }
+  }
+}
+
+async function confirmarPendenciaGrupo(nomeEnc, foneEnc){
+  const nome = decodeURIComponent(nomeEnc);
+  const fone = decodeURIComponent(foneEnc);
+
+  try{
+    showSaving('Confirmando...', 'Atualizando reservas e vendidos', '⏳');
+
+    const [reservasAtual, vendidosAtual, compradoresAtual] = await Promise.all([
+      fbGet(FB_RESERVAS),
+      fbGet(FB_VENDIDOS),
+      fbGet(FB_COMPRADORES)
+    ]);
+
+    const reservas = normalizeReservasMap(reservasAtual);
+    const vendidos = normalizeVendidosList(vendidosAtual);
+    const compradores = normalizeCompradoresMap(compradoresAtual);
+
+    const nums = sortNums(
+      Object.entries(reservas)
+        .filter(([, reserva]) => (reserva?.nome || '').trim() === nome && String(reserva?.fone || '').trim() === fone)
+        .map(([num]) => num)
+    );
+
+    if(nums.length === 0){
+      hideSaving();
+      await carregarCotas();
+      return;
+    }
+
+    for(const num of nums){
+      vendidos.add(num);
+      compradores[num] = nome;
+    }
+
+    await fbPut(FB_VENDIDOS, sortNums(Array.from(vendidos)));
+    await fbPut(FB_COMPRADORES, compradores);
+
+    for(const num of nums){
+      await fbDelete(`${FB_BASE}/${RIFA_ROOT}/reservas/${num}.json`);
+      delete reservas[num];
+    }
+
+    vendidosSet = vendidos;
+    compradoresPorNumero = compradores;
+    reservasPorNumero = reservas;
+    renderGrade();
+    atualizarProgresso();
+    renderSidebar();
+    showSaved('Confirmado ✅');
+  }catch(err){
+    console.error(err);
+    showSaving('Erro ao confirmar', 'Abra o Console (F12) para detalhes', '❌');
+    setTimeout(hideSaving, 1500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restoreCompradorDraft();
+  bindCompradorDraft();
+  if(hasValidAdminSession()) setAdminMode(true);
+  carregarCotas();
+});
+
+window.abrirModal = abrirModal;
+window.fecharModal = fecharModal;
+window.copiarPix = copiarPix;
+window.prepararWpp = prepararWpp;
+window.toggleAdmin = toggleAdmin;
+window.entrarAdmin = entrarAdmin;
+window.salvarAlteracoes = salvarAlteracoes;
+window.registrarComprador = registrarComprador;
+window.sairAdmin = sairAdmin;
+window.toggleSidebar = toggleSidebar;
+window.confirmarPendenciaGrupo = confirmarPendenciaGrupo;
 </script>
 </body>
 </html>
